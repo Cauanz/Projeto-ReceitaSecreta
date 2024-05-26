@@ -48,11 +48,6 @@ async function showSuggestions(value){
       }
    })
 
-}
-
-// TODO - REFINAR CÓDIGO DA FUNÇÃO ABAIXO QUE ATUALIZA INPUT COM SUGESTÃO CLICADA E ACIMA QUE CRIA SUGESTÕES (APRENDER A DESTACAR A SUGESTÃO CONFORME DIGITA)
-
-function updateSearch(){
    const items = document.querySelectorAll('.suggestionItem');
    const input = document.querySelector('#ingredient-input');
 
@@ -64,18 +59,20 @@ function updateSearch(){
       item.addEventListener('click', () => {
          input.value = item.textContent;
          // console.log(item.value)
+         list.innerHTML = '';
       })
    })
    console.log(items)
+
 }
+
+// TODO - REFINAR CÓDIGO DA FUNÇÃO ABAIXO QUE ATUALIZA INPUT COM SUGESTÃO CLICADA E ACIMA QUE CRIA SUGESTÕES (APRENDER A DESTACAR A SUGESTÃO CONFORME DIGITA)
+
 
 const input = document.querySelector('#ingredient-input');
 input.addEventListener('keyup', (e) => {
    showSuggestions(e.target.value);
    // console.log(e.target.value);
-   setTimeout(() => {
-      updateSearch()
-   }, 1000)
 })
 // AUTOCOMPLETE / CAMPO DE BUSCA / TAGS
 
