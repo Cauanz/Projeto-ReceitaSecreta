@@ -31,10 +31,29 @@ header h1 {
   padding: 5px;
   font-size: 20px;
   outline: none;
+  position: absolute;
 }
 
-#ingredient-input:focus {
+/* #ingredient-input:focus {
   scale: 1.1;
+} */
+
+#selected-ingredients{
+  position: relative;
+  width: 400px;
+  height: 50px;
+  top: 50%;
+}
+
+#selected-ingredients li {
+  width: 400px;
+  height: 50px;
+  padding: 5px;
+  border: 1px solid black;
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 
@@ -79,28 +98,3 @@ header h1 {
 .recipe-card a:hover {
   background-color: #0056b3;
 }
-
-
-
-
-
-.ingredient-selector {
-   position: relative;
- }
- 
- #selected-ingredients {
-   list-style: none;
-   padding: 0;
-   position: absolute;
-   top: 100%;
-   left: 0;
-   background: #fff;
-   border: 1px solid #ccc;
-   border-top: none;
-   border-radius: 0 0 5px 5px;
- }
- 
- #selected-ingredients li {
-   cursor: pointer;
-   padding: 5px;
- }
