@@ -1,10 +1,19 @@
 
 // AUTOCOMPLETE / CAMPO DE BUSCA / TAGS
-const API_KEY = '459371bbb4e14c7e916851c51e8be668';
+// const API_KEY = 'a8eb865b1f7749d5aebede3b123f5bff';
+// const CLIENT_SECRET = 'b8046489166b4b979bd0e584b8ca4de8';
 
-async function fetchData(valueReq, APIKEY){
+async function fetchData(valueReq){
+   const url = `https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=${valueReq}`;
+   const options = {
+      method: 'GET',
+      headers: {
+         'x-rapidapi-key': '4956a899b0msh7810b3165871414p196a87jsn13188d543f5e',
+         'x-rapidapi-host': 'tasty.p.rapidapi.com'
+      }
+   };
    try {
-      const response = await fetch(`https://api.spoonacular.com/food/ingredients/search?query=${valueReq}&apiKey=${APIKEY}`);
+      const response = await fetch(url, options); //* antiga API
       const data = await response.json();
       // console.log(data.result);
       return data.results;
@@ -24,54 +33,63 @@ async function fetchRecipes(value, APIKEY) {
    }
 }
 
-
-
 async function showSuggestions(value){
+   
    if(value === ''){
       return [];
    }
 
-   const ingredients = await fetchData(value, API_KEY);
+   const ingredients = await fetchData(value);
    console.log(ingredients);
-
-
+   
    const list = document.querySelector("#selected-ingredients");
    let limit = 0;
    list.innerHTML = '';
+   
    ingredients.map((ingredient) => {
-      if(limit < 10){
+
+      if(limit < 10 && ingredient.type === 'ingredient'){
          let element = document.createElement('li');
          element.classList.add("suggestionItem");
-         element.textContent = ingredient.name;
+
+         let regex = new RegExp(`(${value})`, 'gi');
+         let highlitedText = ingredient.display.replace(regex, '<mark>$1</mark>')
+         element.innerHTML = highlitedText;
          list.append(element);
          limit++
       }
+
    })
-
-   const items = document.querySelectorAll('.suggestionItem');
-   const input = document.querySelector('#ingredient-input');
-
-   if(items.length === 0){
-      return [];
-   }
-
-   items.forEach((item) => {
-      item.addEventListener('click', () => {
-         input.value = item.textContent;
-         // console.log(item.value)
-         list.innerHTML = '';
-      })
-   })
-   console.log(items)
 
 }
 
 // TODO - REFINAR CÓDIGO DA FUNÇÃO ABAIXO QUE ATUALIZA INPUT COM SUGESTÃO CLICADA E ACIMA QUE CRIA SUGESTÕES (APRENDER A DESTACAR A SUGESTÃO CONFORME DIGITA)
 
+function updateSearch(){
+   const items = document.querySelectorAll('.suggestionItem');
+   const input = document.querySelector('#ingredient-input');
 
+   items.forEach((item) => {
+      item.addEventListener('click', () => {
+         input.value = item.textContent;
+         list.innerHTML = '';
+         // console.log(item.value)
+         list.innerHTML = '';
+      })
+   })
+   console.log(items)
+}
+
+// TODO - REFINAR CÓDIGO DA FUNÇÃO ABAIXO QUE ATUALIZA INPUT COM SUGESTÃO CLICADA E ACIMA QUE CRIA SUGESTÕES (APRENDER A DESTACAR A SUGESTÃO CONFORME DIGITA)
+
+
+let timeout = 0
 const input = document.querySelector('#ingredient-input');
 input.addEventListener('keyup', (e) => {
-   showSuggestions(e.target.value);
+   clearTimeout(timeout);
+   setTimeout(() => {
+      showSuggestions(e.target.value);
+   }, 300)
    // console.log(e.target.value);
 })
 // AUTOCOMPLETE / CAMPO DE BUSCA / TAGS

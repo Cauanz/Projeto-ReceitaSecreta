@@ -56,13 +56,15 @@ header h1 {
   align-items: center;
 }
 
-
 .recipe-container {
   width: 80vw;
   margin: 0 auto;
 }
 
-
+mark {
+  background-color: yellow;
+  color: black;
+}
 
 
 
