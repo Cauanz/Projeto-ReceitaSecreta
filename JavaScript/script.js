@@ -61,11 +61,6 @@ async function showSuggestions(value){
 
    })
 
-}
-
-// TODO - REFINAR CÓDIGO DA FUNÇÃO ABAIXO QUE ATUALIZA INPUT COM SUGESTÃO CLICADA E ACIMA QUE CRIA SUGESTÕES (APRENDER A DESTACAR A SUGESTÃO CONFORME DIGITA)
-
-function updateSearch(){
    const items = document.querySelectorAll('.suggestionItem');
    const input = document.querySelector('#ingredient-input');
 
@@ -74,13 +69,11 @@ function updateSearch(){
          input.value = item.textContent;
          list.innerHTML = '';
          // console.log(item.value)
-         list.innerHTML = '';
       })
    })
    console.log(items)
-}
 
-// TODO - REFINAR CÓDIGO DA FUNÇÃO ABAIXO QUE ATUALIZA INPUT COM SUGESTÃO CLICADA E ACIMA QUE CRIA SUGESTÕES (APRENDER A DESTACAR A SUGESTÃO CONFORME DIGITA)
+}
 
 
 let timeout = 0
