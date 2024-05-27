@@ -38,14 +38,14 @@ header h1 {
   scale: 1.1;
 } */
 
-#selected-ingredients{
+#selected{
   position: relative;
   width: 400px;
   height: 50px;
   top: 50%;
 }
 
-#selected-ingredients li {
+#selected li {
   width: 400px;
   height: 50px;
   padding: 5px;

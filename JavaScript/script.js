@@ -3,8 +3,27 @@
 // const API_KEY = 'a8eb865b1f7749d5aebede3b123f5bff';
 // const CLIENT_SECRET = 'b8046489166b4b979bd0e584b8ca4de8';
 
-async function fetchData(valueReq){
-   const url = `https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=${valueReq}`;
+// async function fetchData(valueReq){
+//    const url = `https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=${valueReq}`;
+//    const options = {
+//       method: 'GET',
+//       headers: {
+//          'x-rapidapi-key': '4956a899b0msh7810b3165871414p196a87jsn13188d543f5e',
+//          'x-rapidapi-host': 'tasty.p.rapidapi.com'
+//       }
+//    };
+//    try {
+//       const response = await fetch(url, options);
+//       const data = await response.json();
+//       // console.log(data.result);
+//       return data.results;
+//    } catch (error) {
+//       console.log(`fetchData function error ${error}`);
+//    }
+// }
+
+async function fetchRecipes(value) {
+   const url = `https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&q=${value}`;
    const options = {
       method: 'GET',
       headers: {
@@ -12,25 +31,46 @@ async function fetchData(valueReq){
          'x-rapidapi-host': 'tasty.p.rapidapi.com'
       }
    };
+
    try {
-      const response = await fetch(url, options); //* antiga API
+      const response = await fetch(url, options);
       const data = await response.json();
-      // console.log(data.result);
+      // console.log(data);
+      if(!response.ok) {
+         throw new Error("HTTP Error");
+      }
       return data.results;
    } catch (error) {
       console.log(`fetchData function error ${error}`);
    }
 }
 
-async function fetchRecipes(value, APIKEY) {
+async function searchRecipe(id) {
+   const url = `https://tasty.p.rapidapi.com/recipes/get-more-info?id=${id}`;
+   const options = {
+      method: 'GET',
+      headers: {
+         'x-rapidapi-key': '4956a899b0msh7810b3165871414p196a87jsn13188d543f5e',
+         'x-rapidapi-host': 'tasty.p.rapidapi.com'
+      }
+   };
+
    try {
-      const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${value}&apiKey=${APIKEY}`);
+      const response = await fetch(url, options);
       const data = await response.json();
-      // console.log(data.result);
-      return data.results;
+      if(!response.ok) {
+         throw new Error("HTTP Error");
+      }
+      console.log(data);
+      // return data.results;
+
+
+      //* Instruções de preparo data.instructions[0-99].display_text
+      //* ingredientes e medidas data.sections[0].components[0-99].ingredient | data.sections[0].components[0-99].measurements
    } catch (error) {
       console.log(`fetchData function error ${error}`);
    }
+   // console.log(id)
 }
 
 async function showSuggestions(value){
@@ -39,21 +79,22 @@ async function showSuggestions(value){
       return [];
    }
 
-   const ingredients = await fetchData(value);
-   console.log(ingredients);
+   const recipes = await fetchRecipes(value);
+   console.log(recipes);
    
-   const list = document.querySelector("#selected-ingredients");
+   const list = document.querySelector("#selected");
    let limit = 0;
    list.innerHTML = '';
    
-   ingredients.map((ingredient) => {
+   recipes.map((recipe) => {
 
-      if(limit < 10 && ingredient.type === 'ingredient'){
+      if(limit < 10){
          let element = document.createElement('li');
          element.classList.add("suggestionItem");
+         element.dataset.recipe_id = recipe.id
 
          let regex = new RegExp(`(${value})`, 'gi');
-         let highlitedText = ingredient.display.replace(regex, '<mark>$1</mark>')
+         let highlitedText = recipe.name.replace(regex, '<mark>$1</mark>')
          element.innerHTML = highlitedText;
          list.append(element);
          limit++
@@ -67,8 +108,9 @@ async function showSuggestions(value){
    items.forEach((item) => {
       item.addEventListener('click', () => {
          input.value = item.textContent;
+         console.log(item)
          list.innerHTML = '';
-         // console.log(item.value)
+         searchRecipe(item.dataset.recipe_id);
       })
    })
    console.log(items)
@@ -76,13 +118,16 @@ async function showSuggestions(value){
 }
 
 
-let timeout = 0
+
+
+
+let timeout = null;
 const input = document.querySelector('#ingredient-input');
 input.addEventListener('keyup', (e) => {
    clearTimeout(timeout);
    setTimeout(() => {
       showSuggestions(e.target.value);
-   }, 300)
+   }, 500)
    // console.log(e.target.value);
 })
 // AUTOCOMPLETE / CAMPO DE BUSCA / TAGS
