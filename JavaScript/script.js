@@ -62,16 +62,24 @@ async function searchRecipe(id) {
          throw new Error("HTTP Error");
       }
       console.log(data);
-      // return data.results;
-
-
+      const recipeContainer = document.querySelector('.recipe-container');
+      let element = document.createElement('div');
+      data.instructions.forEach((instruction) => {
+         let p = document.createElement('p');
+         p.textContent = instruction.display_text;
+         element.append(p);
+      })
+      recipeContainer.append(element)
       //* Instruções de preparo data.instructions[0-99].display_text
       //* ingredientes e medidas data.sections[0].components[0-99].ingredient | data.sections[0].components[0-99].measurements
    } catch (error) {
       console.log(`fetchData function error ${error}`);
    }
-   // console.log(id)
 }
+
+//TODO- adicionar botão de pesquisa, e mudar para se selecionar uma sugestão ir para página da receita selecionada, senão se pesquisar mostrar cards com receitas que contenham palavra-chave digitada
+
+//todo - Ideia para próxima página para exibir receita, passar os parametros para ele pegar a receita lá, e os parametros de instrucoes/porcoes também lá, talvez passar o id da receita somente
 
 async function showSuggestions(value){
    
