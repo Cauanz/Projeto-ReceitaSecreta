@@ -18,6 +18,21 @@ header h1 {
   text-align: center;
 }
 
+form {
+  width: 450px;
+  height: 50px;
+  position: absolute;
+  display: flex;
+}
+
+form button {
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
+  background: transparent;
+  outline: none;
+}
+
 .ingredient-selector {
   height: 100px;
   display: flex;
@@ -31,7 +46,6 @@ header h1 {
   padding: 5px;
   font-size: 20px;
   outline: none;
-  position: absolute;
 }
 
 /* #ingredient-input:focus {

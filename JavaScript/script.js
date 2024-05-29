@@ -46,35 +46,37 @@ async function fetchRecipes(value) {
 }
 
 async function searchRecipe(id) {
-   const url = `https://tasty.p.rapidapi.com/recipes/get-more-info?id=${id}`;
-   const options = {
-      method: 'GET',
-      headers: {
-         'x-rapidapi-key': '4956a899b0msh7810b3165871414p196a87jsn13188d543f5e',
-         'x-rapidapi-host': 'tasty.p.rapidapi.com'
-      }
-   };
+   window.location.href = `recipe-details.html?id=${id}`
 
-   try {
-      const response = await fetch(url, options);
-      const data = await response.json();
-      if(!response.ok) {
-         throw new Error("HTTP Error");
-      }
-      console.log(data);
-      const recipeContainer = document.querySelector('.recipe-container');
-      let element = document.createElement('div');
-      data.instructions.forEach((instruction) => {
-         let p = document.createElement('p');
-         p.textContent = instruction.display_text;
-         element.append(p);
-      })
-      recipeContainer.append(element)
+   // const url = `https://tasty.p.rapidapi.com/recipes/get-more-info?id=${id}`;
+   // const options = {
+   //    method: 'GET',
+   //    headers: {
+   //       'x-rapidapi-key': '4956a899b0msh7810b3165871414p196a87jsn13188d543f5e',
+   //       'x-rapidapi-host': 'tasty.p.rapidapi.com'
+   //    }
+   // };
+
+   // try {
+   //    const response = await fetch(url, options);
+   //    const data = await response.json();
+   //    if(!response.ok) {
+   //       throw new Error("HTTP Error");
+   //    }
+   //    console.log(data);
+      // const recipeContainer = document.querySelector('.recipe-container');
+      // let element = document.createElement('div');
+      // data.instructions.forEach((instruction) => {
+      //    let p = document.createElement('p');
+      //    p.textContent = instruction.display_text;
+      //    element.append(p);
+      // })
+      // recipeContainer.append(element)
       //* Instruções de preparo data.instructions[0-99].display_text
       //* ingredientes e medidas data.sections[0].components[0-99].ingredient | data.sections[0].components[0-99].measurements
-   } catch (error) {
-      console.log(`fetchData function error ${error}`);
-   }
+   // } catch (error) {
+   //    console.log(`fetchData function error ${error}`);
+   // }
 }
 
 //TODO- adicionar botão de pesquisa, e mudar para se selecionar uma sugestão ir para página da receita selecionada, senão se pesquisar mostrar cards com receitas que contenham palavra-chave digitada
@@ -131,13 +133,15 @@ async function showSuggestions(value){
 
 let timeout = null;
 const input = document.querySelector('#ingredient-input');
-input.addEventListener('keyup', (e) => {
-   clearTimeout(timeout);
-   setTimeout(() => {
-      showSuggestions(e.target.value);
-   }, 500)
-   // console.log(e.target.value);
-})
+if(input) {
+   input.addEventListener('keyup', (e) => {
+      clearTimeout(timeout);
+      setTimeout(() => {
+         showSuggestions(e.target.value);
+      }, 500)
+      // console.log(e.target.value);
+   })
+}
 // AUTOCOMPLETE / CAMPO DE BUSCA / TAGS
 
 
@@ -205,23 +209,26 @@ let iterations = 0;
 let interval;
 let target = document.querySelector("h1");
 
-setInterval(() => {
-   clearInterval(interval);
+if(target){
+   
+   setInterval(() => {
+      clearInterval(interval);
 
-   interval = setInterval(() => {
-      target.innerText = target.innerText.split("")
-      .map((letter, index) => {
-         if(index < iterations){
-            return target.dataset.value[index];
+      interval = setInterval(() => {
+         target.innerText = target.innerText.split("")
+         .map((letter, index) => {
+            if(index < iterations){
+               return target.dataset.value[index];
+            }
+            return letters[Math.floor(Math.random() * 26)]
+         })
+         .join("");
+
+         if(iterations >= target.dataset.value.length){
+            clearInterval(interval);
          }
-         return letters[Math.floor(Math.random() * 26)]
-      })
-      .join("");
 
-      if(iterations >= target.dataset.value.length){
-         clearInterval(interval);
-      }
-
-      iterations += 1 / 3;
-   }, 30)
-}, 1000);
+         iterations += 1 / 3;
+      }, 30)
+   }, 1000);
+}
