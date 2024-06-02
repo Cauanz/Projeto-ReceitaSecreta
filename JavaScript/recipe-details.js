@@ -1,3 +1,6 @@
+document.querySelector('#home-link').addEventListener('click', () => window.location.href="index.html")
+
+
 document.addEventListener('DOMContentLoaded', () => {
    const urlParams = new URLSearchParams(window.location.search);
    const id = urlParams.get('id');
@@ -13,10 +16,20 @@ document.addEventListener('DOMContentLoaded', () => {
       })
    .then(response => response.json())
    .then(data => {
+         const instructions = [];
+         for (let i = 0; i < data.instructions.length; i++) {
+            instructions.push(data.instructions[i].display_text);
+         }
          document.getElementById('recipe-name').textContent = data.name;
-         document.getElementById('recipe-image').src = data.image.url;
-         document.getElementById('recipe-description').textContent = data.summary;
-         document.getElementById('recipe-instructions').innerHTML = data.instructions.join('<br>');
+         document.getElementById('recipe-image').src = data.thumbnail_url;
+         document.getElementById('recipe-description').textContent = data.description;
+         
+         instructions.forEach((instruction) => {
+            const element = document.createElement('li');
+            element.innerText = instruction;
+            document.getElementById('recipe-instructions').append(element);
+         })
+         console.log(data)
       })
    .catch(error => console.error('Error:', error));
 }

@@ -203,32 +203,35 @@ if(input) {
 
 //TITULO ANIMADO
 
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function AnimatedTitle(){
+   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-let iterations = 0;
-let interval;
-let target = document.querySelector("h1");
+   let iterations = 0;
+   let interval;
+   let target = document.querySelector("h1");
 
-if(target){
-   
-   setInterval(() => {
-      clearInterval(interval);
+   if(target){
+      
+      setInterval(() => {
+         clearInterval(interval);
 
-      interval = setInterval(() => {
-         target.innerText = target.innerText.split("")
-         .map((letter, index) => {
-            if(index < iterations){
-               return target.dataset.value[index];
+         interval = setInterval(() => {
+            target.innerText = target.innerText.split("")
+            .map((letter, index) => {
+               if(index < iterations){
+                  return target.dataset.value[index];
+               }
+               return letters[Math.floor(Math.random() * 26)]
+            })
+            .join("");
+
+            if(iterations >= target.dataset.value.length){
+               clearInterval(interval);
             }
-            return letters[Math.floor(Math.random() * 26)]
-         })
-         .join("");
 
-         if(iterations >= target.dataset.value.length){
-            clearInterval(interval);
-         }
-
-         iterations += 1 / 3;
-      }, 30)
-   }, 1000);
+            iterations += 1 / 3;
+         }, 30)
+      }, 1000);
+   }
 }
+AnimatedTitle();

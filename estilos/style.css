@@ -52,6 +52,10 @@ form button {
   scale: 1.1;
 } */
 
+#submit-button {
+  cursor: pointer;
+}
+
 #selected{
   position: relative;
   width: 400px;
