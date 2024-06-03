@@ -74,10 +74,7 @@ form button {
   align-items: center;
 }
 
-.recipe-container {
-  width: 80vw;
-  margin: 0 auto;
-}
+
 
 mark {
   background-color: yellow;
@@ -85,19 +82,29 @@ mark {
 }
 
 
-
-
 .recipe-container {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.recipe-content {
+  width: 100%;
+  margin: 50px;
+  height: inherit;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 7em;
 }
 
 .recipe-card {
+  color: black;
+  text-decoration: none;
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
-  width: 250px;
+  width: 16rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

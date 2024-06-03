@@ -35,10 +35,13 @@ async function fetchRecipes(value) {
    try {
       const response = await fetch(url, options);
       const data = await response.json();
-      // console.log(data);
+      console.log(data.results);
+
+
       if(!response.ok) {
          throw new Error("HTTP Error");
       }
+
       return data.results;
    } catch (error) {
       console.log(`fetchData function error ${error}`);
@@ -90,7 +93,7 @@ async function showSuggestions(value){
    }
 
    const recipes = await fetchRecipes(value);
-   console.log(recipes);
+   // console.log(recipes);
    
    const list = document.querySelector("#selected");
    let limit = 0;
@@ -128,7 +131,41 @@ async function showSuggestions(value){
 }
 
 
+async function createCards(value){
 
+   const recipes = await fetchRecipes(value)
+   console.log(recipes);
+
+   const container = document.querySelector('.recipe-content');
+
+   recipes.forEach((recipe) => {
+
+      const recipeCard = document.createElement('a');
+      recipeCard.href = `recipe-details.html?id=${recipe.id}`;
+      recipeCard.classList.add('recipe-card');
+
+      const recipeImage = document.createElement('img');
+      recipeImage.src = recipe.thumbnail_url;
+      recipeImage.alt = recipe.name;
+
+      const recipeTitle = document.createElement('h3');
+      recipeTitle.textContent = recipe.name;
+
+      const recipeDescription = document.createElement('p');
+      recipeDescription.textContent = recipe.description;
+
+      // const recipeLink = document.createElement('a');
+      // recipeLink.href = recipe.link;
+      // recipeLink.textContent = 'Ver Receita';
+
+      recipeCard.appendChild(recipeImage);
+      recipeCard.appendChild(recipeTitle);
+      recipeCard.appendChild(recipeDescription);
+      // recipeCard.appendChild(recipeLink);
+
+      container.append(recipeCard);
+   })
+}
 
 
 let timeout = null;
@@ -142,6 +179,8 @@ if(input) {
       // console.log(e.target.value);
    })
 }
+const submitBnt = document.querySelector('#submit-button');
+submitBnt.addEventListener('click', createCards(input.value));
 // AUTOCOMPLETE / CAMPO DE BUSCA / TAGS
 
 
@@ -234,4 +273,4 @@ function AnimatedTitle(){
       }, 1000);
    }
 }
-AnimatedTitle();
+document.addEventListener('DOMContentLoaded', AnimatedTitle);
