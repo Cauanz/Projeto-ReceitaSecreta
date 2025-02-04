@@ -1,43 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-   <link rel="stylesheet" href="estilos/style.css">
-   <title>ReceitaSecreta</title>
-</head>
-<body>
-   
-   <header>
+	<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+    />
+    <link rel="stylesheet" href="estilos/style.css" />
+    <title>ReceitaSecreta</title>
+  </head>
+  <body>
+    <header>
       <h1 data-value="RECEITA SECRETA">RECEITA SECRETA</h1>
-
       <!-- MENU PARA ACESSAR CONTA - FAZER MAIS TARDE QUANDO TIVER TERMINADO -->
-   </header>
+    </header>
 
-   <main>
+		<!-- TODO IDEIA PARA OUTRO MOMENTO - ADICIONAR SELEÇÃO DE QUANTIDADE DE INGREDIENTES -->
 
+    <main>
+      <!-- BARRA DE PESQUISA -->
       <div class="ingredient-selector">
-            <form>
-               <input type="text" id="ingredient-input" placeholder="Pesquise uma receita...">
-               <button type="submit" id="submit-button"><ion-icon size="large" name="search-outline"></ion-icon></button>
-            </form>
-            <ul id="selected">
-               <!-- <li>rice</li> -->
-            </ul>
+        <div class="search-bar">
+					<select multiple name="search-ingredients" id="search-ingredients">
+					</select>
+          <button type="submit" id="submit-button">
+            <ion-icon size="large" name="search-outline"></ion-icon>
+          </button>
+          <!-- <form>
+            <input
+              type="text"
+              id="ingredient-input"
+              placeholder="Buscar ingrediente..."
+            />
+          </form>
+          <ul id="selected">
+          </ul> -->
+        </div>
+        <!-- <div class="selection">
+          <p>Ingredientes selecionados</p>
+          <div class="selected-ingredients"></div>
+        </div> -->
       </div>
-
+      <!-- FIM BARRA DE PESQUISA -->
 
       <div class="recipe-container">
-         <div class="recipe-content">
-
-         </div>
+        <h2>Recomendações</h2>
+        <div class="recipe-content"></div>
       </div>
-      
-   </main>
+    </main>
 
-   <script type="module" src="JavaScript/script.js"></script>
-</body>
+		<!-- Include Choices JavaScript (latest) -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script defer type="module" src="JavaScript/script.js"></script>
+  </body>
 </html>

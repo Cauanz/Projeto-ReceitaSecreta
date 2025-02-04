@@ -1,29 +1,69 @@
 
-// AUTOCOMPLETE / CAMPO DE BUSCA / TAGS
-// const API_KEY = 'a8eb865b1f7749d5aebede3b123f5bff';
-// const CLIENT_SECRET = 'b8046489166b4b979bd0e584b8ca4de8';
 
-// async function fetchData(valueReq){
-//    const url = `https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=${valueReq}`;
-//    const options = {
-//       method: 'GET',
-//       headers: {
-//          'x-rapidapi-key': '4956a899b0msh7810b3165871414p196a87jsn13188d543f5e',
-//          'x-rapidapi-host': 'tasty.p.rapidapi.com'
-//       }
-//    };
-//    try {
-//       const response = await fetch(url, options);
-//       const data = await response.json();
-//       // console.log(data.result);
-//       return data.results;
-//    } catch (error) {
-//       console.log(`fetchData function error ${error}`);
-//    }
-// }
+async function fetchIngredients(query) {
+   const url = `https://api.spoonacular.com/food/ingredients/autocomplete?query=${query}&number=10&apiKey=459371bbb4e14c7e916851c51e8be668`;
+   const options = {
+      method: 'GET',
+      headers: {
+         'Content-Type': 'application/json',
+      }
+   }
 
-async function fetchRecipes(value) {
-   const url = `https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&q=${value}`;
+   try {
+      const response = await fetch(url, options)
+      const data = await response.json();
+      return data;
+   } catch (error) {
+      console.error(`fetchIngredients function error ${error}`);
+   }
+}
+
+async function preloadIngredients() {
+   const ingredients = await fetchIngredients('');
+   const ingredientChoices = ingredients.map(ingredient => ({
+      value: ingredient.name,
+      label: ingredient.name
+   }));
+   choices.setChoices(ingredientChoices, 'value', 'label', true);
+}
+
+// FLUXO: USER DIGITA ALGO
+//CHAMADA PARA API DE INGREDIENTES É FEITA
+//API RETORNA SUGETÕES/INGREDIENTES
+//INGREDIENTES SÃO ADDICIONADOS A UMA ARRAY DE CHOICES
+//NEW CHOICES USA ARRAY DE CHOICES EM CHOICES
+
+
+   // CAMPO DE BUSCA/SELECT DE INGREDIENTES
+   const element = document.querySelector('#search-ingredients');
+   const choices = new Choices(element, {
+      choices: [
+         //TODO TORNAR ISSO DINAMICO
+         { value: 'apple', label: 'Apple' },
+         { value: 'orange', label: 'Orange' },
+         { value: 'banana', label: 'Banana' },
+         { value: 'grape', label: 'Grape' },
+      ],
+      removeItems: true,
+      removeItemButton: true,
+      removeItemButtonAlignLeft: false,
+   });
+
+async function updateIngredientChoices(query) {
+   const ingredients = await fetchIngredients(query);
+   console.log(ingredients)
+   const ingredientChoices = ingredients.map(ingredient => ({
+      value: ingredient.name,
+      label: ingredient.name
+   }));
+   choices.setChoices(ingredientChoices, 'value', 'label', true);
+}
+
+
+async function fetchRecipes(ingredients) {
+   ingredients = ingredients.map((ingredient) => ingredient.value).join(',')
+   console.log("fetchRecipes", ingredients);
+   const url = `https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&q=${ingredients}`;
    const options = {
       method: 'GET',
       headers: {
@@ -82,10 +122,6 @@ async function searchRecipe(id) {
    // }
 }
 
-//TODO- adicionar botão de pesquisa, e mudar para se selecionar uma sugestão ir para página da receita selecionada, senão se pesquisar mostrar cards com receitas que contenham palavra-chave digitada
-
-//todo - Ideia para próxima página para exibir receita, passar os parametros para ele pegar a receita lá, e os parametros de instrucoes/porcoes também lá, talvez passar o id da receita somente
-
 async function showSuggestions(value){
    
    if(value === ''){
@@ -130,13 +166,13 @@ async function showSuggestions(value){
 
 }
 
-
 async function createCards(value){
 
    const recipes = await fetchRecipes(value)
    console.log(recipes);
 
-   const container = document.querySelector('.recipe-content');
+   let container = document.querySelector('.recipe-content');
+   container.innerHTML = '';
 
    recipes.forEach((recipe) => {
 
@@ -168,40 +204,36 @@ async function createCards(value){
 }
 
 
+let selected = '';
+const input = document.querySelector('#search-ingredients');
+input.addEventListener("change", (e) => {
+   selected = choices.getValue();
+})
+
+//PEGAMOS O INPUT DO CAMPO DE TEXTO
+input.closest(".choices").querySelector("input").addEventListener('input', (e) => {
+   console.log(e.target.value);
+   updateIngredientChoices(e.target.value);
+})
+
+
+//BUSCAR QUANDO NADA É DIGITADO
 let timeout = null;
-const input = document.querySelector('#ingredient-input');
-if(input) {
+if(input.value !== ""){
    input.addEventListener('keyup', (e) => {
       clearTimeout(timeout);
       setTimeout(() => {
          showSuggestions(e.target.value);
       }, 500)
-      // console.log(e.target.value);
    })
 }
+
+//BUSCAR QUANDO ALGO É DIGITADO
 const submitBnt = document.querySelector('#submit-button');
-submitBnt.addEventListener('click', createCards(input.value));
+submitBnt.addEventListener('click', () => {
+   createCards(selected);
+});
 // AUTOCOMPLETE / CAMPO DE BUSCA / TAGS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -241,7 +273,6 @@ submitBnt.addEventListener('click', createCards(input.value));
 
 
 //TITULO ANIMADO
-
 function AnimatedTitle(){
    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
