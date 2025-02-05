@@ -38,17 +38,17 @@ async function preloadIngredients() {
    const element = document.querySelector('#search-ingredients');
    const choices = new Choices(element, {
       choices: [
-         //TODO TORNAR ISSO DINAMICO
-         { value: 'apple', label: 'Apple' },
-         { value: 'orange', label: 'Orange' },
-         { value: 'banana', label: 'Banana' },
-         { value: 'grape', label: 'Grape' },
+         { value: 'milk', label: 'milk' },
+         { value: 'orange', label: 'orange' },
+         { value: 'banana', label: 'banana' },
+         { value: 'eggs', label: 'eggs' },
       ],
       removeItems: true,
       removeItemButton: true,
       removeItemButtonAlignLeft: false,
    });
 
+// ATUALIZA LISTA DE OPÇÕES DE INGREDIENTES
 async function updateIngredientChoices(query) {
    const ingredients = await fetchIngredients(query);
    console.log(ingredients)

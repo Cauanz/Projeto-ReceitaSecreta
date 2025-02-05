@@ -17,9 +17,26 @@
       <div class="recipe-details">
          <h2 id="recipe-name"></h2>
          <img src="" alt="" id="recipe-image">
-         <h2 id="description-title">Descrição</h2>
-         <p id="recipe-description"></p>
-         <ul id="recipe-instructions"></ul>
+         <p style="font-size: 9px;">Imagem meramente ilustrativa</p>
+
+         <div class="tabs-container">
+            <h2 class="tab" onclick="showContent('recipe-description')">Descrição</h2>
+            <h2 class="tab" onclick="showContent('recipe-ingredients')">Ingredientes</h2>
+            <h2 class="tab" onclick="showContent('recipe-instructions')">Preparo</h2>
+         </div>
+
+         <section class="content" id="recipe-description">
+            <p class="description-text"></p>
+         </section>
+
+         <section id="recipe-ingredients" class="content">
+            <ul class="ingredients-text"></ul>
+         </section>
+
+         <section id="recipe-instructions" class="content">
+            <ul class="instructions-text"></ul>
+         </section>
+
       </div>
    </main>
 
