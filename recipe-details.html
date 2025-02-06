@@ -20,13 +20,18 @@
          <p style="font-size: 9px;">Imagem meramente ilustrativa</p>
 
          <div class="tabs-container">
-            <h2 class="tab" onclick="showContent('recipe-description')">Descrição</h2>
+            <h2 class="tab active" onclick="showContent('recipe-description')">Descrição</h2>
             <h2 class="tab" onclick="showContent('recipe-ingredients')">Ingredientes</h2>
             <h2 class="tab" onclick="showContent('recipe-instructions')">Preparo</h2>
          </div>
 
-         <section class="content" id="recipe-description">
+         <section class="content active" id="recipe-description">
             <p class="description-text"></p>
+            <p class="description-text2"></p>
+            <p class="description-text3"></p>
+            <p class="description-text4"></p>
+
+            <canvas id="nutrition-chart" style="width: 300px; height: 200px;"></canvas>
          </section>
 
          <section id="recipe-ingredients" class="content">
@@ -40,6 +45,9 @@
       </div>
    </main>
 
-   <script src="JavaScript/recipe-details.js"></script>
+   <script
+   src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+   </script>
+   <script defer src="JavaScript/recipe-details.js"></script>
 </body>
 </html>
