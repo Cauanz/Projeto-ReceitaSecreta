@@ -62,27 +62,29 @@ async function updateIngredientChoices(query) {
 
 async function fetchRecipes(ingredients) {
    ingredients = ingredients.map((ingredient) => ingredient.value).join(',')
+   console.log(ingredients)
    console.log("fetchRecipes", ingredients);
-   const url = `https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&q=${ingredients}`;
+   // const url = `https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&q=${ingredients}`;
+   const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=10&apiKey=459371bbb4e14c7e916851c51e8be668`;
    const options = {
       method: 'GET',
-      headers: {
-         'x-rapidapi-key': '4956a899b0msh7810b3165871414p196a87jsn13188d543f5e',
-         'x-rapidapi-host': 'tasty.p.rapidapi.com'
-      }
+      // headers: {
+         // 'x-rapidapi-key': '4956a899b0msh7810b3165871414p196a87jsn13188d543f5e',
+         // 'x-rapidapi-host': 'tasty.p.rapidapi.com'
+      // }
    };
 
    try {
       const response = await fetch(url, options);
       const data = await response.json();
-      console.log(data.results);
+      console.log(data);
 
 
       if(!response.ok) {
          throw new Error("HTTP Error");
       }
 
-      return data.results;
+      return data;
    } catch (error) {
       console.log(`fetchData function error ${error}`);
    }
@@ -174,6 +176,8 @@ async function createCards(value){
    let container = document.querySelector('.recipe-content');
    container.innerHTML = '';
 
+
+   //*PARA SPOONACULAR API
    recipes.forEach((recipe) => {
 
       const recipeCard = document.createElement('a');
@@ -182,43 +186,79 @@ async function createCards(value){
 
       const recipeImage = document.createElement('img');
       recipeImage.classList.add('recipe-image');
-      recipeImage.src = recipe.thumbnail_url;
-      recipeImage.alt = recipe.name;
+      recipeImage.src = recipe.image;
+      recipeImage.alt = recipe.title;
 
       const recipeTitle = document.createElement('h3');
       recipeTitle.classList.add('recipe-title');
-      recipeTitle.textContent = recipe.name;
+      recipeTitle.textContent = recipe.title;
 
-      const recipeDescription = document.createElement('p');
-      recipeDescription.classList.add('recipe-description');
-      recipeDescription.textContent = recipe.description;
+      // const recipeDescription = document.createElement('p');
+      // recipeDescription.classList.add('recipe-description');
+      // recipeDescription.textContent = recipe.description;
 
       const recipeStats = document.createElement('div');
       recipeStats.classList.add('recipe-stats');
 
       const recipeLikes = document.createElement('p');
       recipeLikes.classList.add('likes');
-      recipeLikes.textContent = `Likes👍: ${recipe.user_ratings.count_positive}`;
-
-      const recipeDislikes = document.createElement('p');
-      recipeDislikes.classList.add('dislikes');
-      recipeDislikes.textContent = `Dislikes👎: ${recipe.user_ratings.count_negative}`;
+      recipeLikes.textContent = `Likes👍: ${recipe.likes}`;
 
       recipeStats.appendChild(recipeLikes);
-      recipeStats.appendChild(recipeDislikes);
-
-      // const recipeLink = document.createElement('a');
-      // recipeLink.href = recipe.link;
-      // recipeLink.textContent = 'Ver Receita';
 
       recipeCard.appendChild(recipeImage);
       recipeCard.appendChild(recipeTitle);
-      recipeCard.appendChild(recipeDescription);
       recipeCard.appendChild(recipeStats);
-      // recipeCard.appendChild(recipeLink);
 
       container.append(recipeCard);
    })
+
+   //*PARA TASTY API
+   // recipes.forEach((recipe) => {
+
+   //    const recipeCard = document.createElement('a');
+   //    recipeCard.href = `recipe-details.html?id=${recipe.id}`;
+   //    recipeCard.classList.add('recipe-card');
+
+   //    const recipeImage = document.createElement('img');
+   //    recipeImage.classList.add('recipe-image');
+   //    recipeImage.src = recipe.thumbnail_url;
+   //    recipeImage.alt = recipe.name;
+
+   //    const recipeTitle = document.createElement('h3');
+   //    recipeTitle.classList.add('recipe-title');
+   //    recipeTitle.textContent = recipe.name;
+
+   //    const recipeDescription = document.createElement('p');
+   //    recipeDescription.classList.add('recipe-description');
+   //    recipeDescription.textContent = recipe.description;
+
+   //    const recipeStats = document.createElement('div');
+   //    recipeStats.classList.add('recipe-stats');
+
+   //    const recipeLikes = document.createElement('p');
+   //    recipeLikes.classList.add('likes');
+   //    recipeLikes.textContent = `Likes👍: ${recipe.user_ratings.count_positive}`;
+
+   //    const recipeDislikes = document.createElement('p');
+   //    recipeDislikes.classList.add('dislikes');
+   //    recipeDislikes.textContent = `Dislikes👎: ${recipe.user_ratings.count_negative}`;
+
+   //    recipeStats.appendChild(recipeLikes);
+   //    recipeStats.appendChild(recipeDislikes);
+
+   //    // const recipeLink = document.createElement('a');
+   //    // recipeLink.href = recipe.link;
+   //    // recipeLink.textContent = 'Ver Receita';
+
+   //    recipeCard.appendChild(recipeImage);
+   //    recipeCard.appendChild(recipeTitle);
+   //    recipeCard.appendChild(recipeDescription);
+   //    recipeCard.appendChild(recipeStats);
+   //    // recipeCard.appendChild(recipeLink);
+
+   //    container.append(recipeCard);
+   // })
 }
 
 
